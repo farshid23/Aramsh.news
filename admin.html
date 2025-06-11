@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>پنل مدیریت اخبار</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; direction: rtl; padding: 2rem; }
+    input, textarea, button { font-size: 1rem; margin: 0.5rem 0; width: 100%; padding: 0.5rem; }
+    textarea { height: 100px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: right; }
+    button.delete { background: #f44336; color: white; border: none; padding: 0.3rem 0.6rem; cursor: pointer; }
+    button.logout { margin-top: 1rem; background: #555; color: white; border: none; padding: 0.5rem 1rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>پنل مدیریت اخبار</h2>
+  <button id="logoutBtn" class="logout">خروج از حساب</button>
+
+  <h3>ثبت خبر جدید</h3>
+  <input type="text" id="title" placeholder="عنوان خبر" />
+  <textarea id="content" placeholder="متن خبر"></textarea>
+  <button id="addNewsBtn">ثبت خبر</button>
+  <p id="msg" style="color:green;"></p>
+
+  <h3>لیست اخبار</h3>
+  <table id="newsTable">
+    <thead>
+      <tr><th>عنوان</th><th>متن خبر</th><th>عملیات</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    import { auth, db } from './firebaseConfig.js';
+    import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import {
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const titleInput = document.getElementById('title');
+    const contentInput = document.getElementById('content');
+    const addNewsBtn = document.getElementById('addNewsBtn');
+    const newsTableBody = document.querySelector('#newsTable tbody');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const msg = document.getElementById('msg');
+
+    // چک کردن ورود کاربر
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // افزودن خبر جدید
+    addNewsBtn.addEventListener('click', async () => {
+      const title = titleInput.value.trim();
+      const content = contentInput.value.trim();
+
+      if (!title || !content) {
+        alert('لطفاً عنوان و متن خبر را وارد کنید.');
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, 'news'), {
+          title,
+          content,
+          createdAt: new Date()
+        });
+        titleInput.value = '';
+        contentInput.value = '';
+        msg.textContent = 'خبر با موفقیت ثبت شد.';
+      } catch (error) {
+        alert('خطا در ثبت خبر: ' + error.message);
+      }
+    });
+
+    // بارگذاری و نمایش لیست اخبار به صورت زنده
+    const newsCollection = collection(db, 'news');
+    onSnapshot(newsCollection, (snapshot) => {
+      newsTableBody.innerHTML = '';
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${data.title}</td>
+          <td>${data.content}</td>
+          <td><button class="delete" data-id="${docSnap.id}">حذف</button></td>
+        `;
+        newsTableBody.appendChild(tr);
+      });
+
+      // اضافه کردن ایونت حذف به دکمه‌ها
+      document.querySelectorAll('button.delete').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = e.target.getAttribute('data-id');
+          if (confirm('آیا مطمئن هستید که می‌خواهید این خبر را حذف کنید؟')) {
+            try {
+              await deleteDoc(doc(db, 'news', id));
+            } catch (error) {
+              alert('خطا در حذف خبر: ' + error.message);
+            }
+          }
+        });
+      });
+    });
+
+    // خروج از حساب
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).then(() => {
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+</body>
+</html>
