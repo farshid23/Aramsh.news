@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fa" >
+<head>
+  <meta charset="UTF-8" />
+  <title>پنل مدیریت - آرامش نیوز</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      direction: rtl;
+      background: #f7f9fc;
+      margin: 0; padding: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    #newsForm {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      font-size: 1rem;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      resize: vertical;
+      font-family: inherit;
+    }
+    button {
+      background: #007bff;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #newsList {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    }
+    .news-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 5px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1rem;
+      color: #444;
+    }
+    .news-item:last-child {
+      border-bottom: none;
+    }
+    .news-text {
+      flex-grow: 1;
+      margin-right: 10px;
+      white-space: pre-wrap;
+    }
+    .news-actions button {
+      margin-left: 5px;
+      background: #dc3545;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+    .news-actions button:hover {
+      background: #a71d2a;
+    }
+    #logoutBtn {
+      background: #6c757d;
+      margin-top: 30px;
+      width: 100%;
+    }
+    #logoutBtn:hover {
+      background: #5a6268;
+    }
+    /* Responsive */
+    @media(max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      #newsForm {
+        padding: 10px;
+      }
+      .news-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .news-actions {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>پنل مدیریت - آرامش نیوز</h1>
+
+  <form id="newsForm">
+    <textarea id="newsText" placeholder="متن خبر را وارد کنید..."></textarea>
+    <button type="submit">افزودن خبر</button>
+  </form>
+
+  <div id="newsList">
+    <h2>لیست اخبار</h2>
+    <div id="newsItems"></div>
+  </div>
+
+  <button id="logoutBtn">خروج از حساب</button>
+
+  <script type="module">
+    import { auth, db } from './firebaseConfig.js';
+    import {
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc,
+      updateDoc,
+      onSnapshot,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    import { signOut, onAuthStateChanged } from "https://www.gstatic.com
