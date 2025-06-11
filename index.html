@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>پایگاه خبری آرامش</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      font-family: Tahoma, sans-serif;
+      background: #121212;
+      direction: rtl;
+      color: white;
+      padding-top: 140px; /* جای هدر */
+    }
+
+    header {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      height: 140px;
+      background: url('https://s6.uupload.ir/files/img_۲۰۲۵۰۶۰۹_۱۸۴۵۱۸_6nue.png') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.55);
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 0 0 8px rgba(255,215,0,0.8);
+      user-select: none;
+    }
+
+    /* دکمه منوی سرویس‌ها */
+    .services-menu-button {
+      position: fixed;
+      top: 100px;
+      left: 10px;
+      z-index: 1500;
+      background-color: #222;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .hamburger {
+      width: 16px;
+      height: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hamburger span {
+      display: block;
+      height: 2.5px;
+      background: white;
+      border-radius: 1.5px;
+    }
+
+    /* منوی کشویی */
+    #servicesSidebar {
+      position: fixed;
+      top: 140px;
+      left: 10px;
+      background: #222;
+      border-radius: 6px;
+      padding: 10px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+      width: 180px;
+      display: none;
+      z-index: 1400;
+      user-select: none;
+    }
+    #servicesSidebar ul {
+      list-style: none;
+      padding: 0 10px;
+    }
+    #servicesSidebar ul li {
+      padding: 10px 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #eee;
+      border-bottom: 1px solid #444;
+      transition: background-color 0.3s ease;
+    }
+    #servicesSidebar ul li:hover {
+      background-color: #ffd700;
+      color: #121212;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .news-card {
+      background: #222;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+    }
+    .news-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(255,215,0,0.7);
+    }
+    .news-card h2 {
+      color: #ffd700;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .news-card p {
+      color: #ccc;
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #888;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1></h1>
+  </header>
+
+  <button class="services-menu-button" id="servicesToggle" aria-label="بازکردن منوی سرویس‌ها">
+    <div class="hamburger" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    منوی سرویس‌ها
+  </button>
+
+  <nav id="servicesSidebar" aria-label="منوی سرویس‌ها">
+    <ul>
+      <li>صفحه نخست</li>
+      <li>سیاسی</li>
+      <li>اقتصادی</li>
+      <li>اجتماعی</li>
+      <li>علمی و فرهنگی</li>
+      <li>استان‌ها</li>
+      <li>ورزشی</li>
+      <li>عکس</li>
+      <li>فیلم</li>
+      <li>شهروندخبرنگار</li>
+      <li>رویداد</li>
+    </ul>
+  </nav>
+
+  <main>
+    <article class="news-card">
+      <h2>خبر ۱: کشف میدان نفتی جدید</h2>
+      <p>وزارت نفت اعلام کرد که یک میدان نفتی جدید در جنوب کشور کشف شده است...</p>
+    </article>
+    <article class="news-card">
+      <h2>خبر ۲: طوفان شدید در شمال کشور</h2>
+      <p>سازمان هواشناسی هشدار سطح قرمز برای استان‌های گیلان و مازندران صادر کرد.</p>
+    </article>
+    <article class="news-card">
+      <h2>خبر ۳: رشد ۴ درصدی بازار بورس</h2>
+      <p>شاخص کل بورس امروز با رشد بیش از ۷۰ هزار واحدی همراه شد...</p>
+    </article>
+    <article class="news-card">
+      <h2>خبر ۴: قهرمانی تیم ملی وزنه‌برداری</h2>
+      <p>تیم ملی با کسب ۳ مدال طلا، صدر جدول مسابقات جهانی را تصاحب کرد.</p>
+    </article>
+  </main>
+
+  <footer>
+    طراحی و توسعه توسط Farshid Rahimi | تمامی حقوق محفوظ است © 2025
+  </footer>
+
+  <script>
+    const servicesToggle = document.getElementById('servicesToggle');
+    const servicesSidebar = document.getElementById('servicesSidebar');
+
+    servicesToggle.addEventListener('click', () => {
+      if (servicesSidebar.style.display === 'block') {
+        servicesSidebar.style.display = 'none';
+      } else {
+        servicesSidebar.style.display = 'block';
+      }
+    });
+
+    // کلیک بیرون منو باعث بسته شدن منو می‌شود
+    document.addEventListener('click', (e) => {
+      if (!servicesSidebar.contains(e.target) && !servicesToggle.contains(e.target)) {
+        servicesSidebar.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
