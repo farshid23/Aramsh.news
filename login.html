@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fa" >
+<head>
+  <meta charset="UTF-8" />
+  <title>ورود به پنل مدیریت - آرامش نیوز</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      direction: rtl;
+      background: #f7f9fc;
+      margin: 0; padding: 20px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    form {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+    button {
+      background: #007bff;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #errorMsg {
+      color: #dc3545;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ورود به پنل مدیریت</h1>
+
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="ایمیل" required />
+    <input type="password" id="password" placeholder="رمز عبور" required />
+    <button type="submit">ورود</button>
+    <div id="errorMsg"></div>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBqOvi8nUjsPpYaWhVMkh4fFlVsCRD076w",
+      authDomain: "aramshnews.firebaseapp.com",
+      projectId: "aramshnews",
+      storageBucket: "aramshnews.firebasestorage.app",
+      messagingSenderId: "549026809444",
+      appId: "1:549026809444:web:4b29d9c52cba6304ca0171"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // اگر قبلاً وارد شده، مستقیماً به پنل میره
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        window.location.href = './admin.html';
+      }
+    });
+
+    loginForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      errorMsg.textContent = '';
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // اگر ورود موفق بود، اینجا به admin.html میره (onAuthStateChanged)
+      } catch (error) {
+        errorMsg.textContent = 'ایمیل یا رمز عبور اشتباه است.';
+      }
+    });
+  </script>
+
+</body>
+</html>
