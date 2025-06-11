@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>پنل مدیریت - پایگاه خبری آرامش</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+  <style>
+    /* تنظیمات کلی */
+    body {
+      font-family: 'Vazirmatn', Tahoma, sans-serif;
+      margin: 0; padding: 0;
+      background: #f5f8fc;
+      direction: rtl;
+      color: #3b3b3b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* هدر مشابه سایت */
+    header {
+      background: #0d47a1;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 3px 7px rgb(0 0 0 / 0.1);
+    }
+    header img {
+      height: 40px;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin: 0;
+      letter-spacing: 1.2px;
+    }
+
+    /* نوار منو */
+    nav {
+      background: #1565c0;
+      display: flex;
+      justify-content: flex-start;
+      gap: 30px;
+      padding: 12px 25px;
+      font-weight: 600;
+      box-shadow: 0 3px 5px rgb(0 0 0 / 0.1);
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+    nav a:hover,
+    nav a.active {
+      background-color: #0b3d91;
+    }
+
+    /* محتوا */
+    main {
+      flex-grow: 1;
+      max-width: 900px;
+      margin: 30px auto 60px;
+      background: white;
+      border-radius: 10px;
+      padding: 25px 35px;
+      box-shadow: 0 0 20px rgb(0 0 0 / 0.08);
+    }
+    main h2 {
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.7rem;
+      color: #0d47a1;
+      border-bottom: 3px solid #1565c0;
+      padding-bottom: 8px;
+    }
+
+    /* فرم اضافه کردن خبر */
+    form#newsForm {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    textarea#newsText {
+      font-family: 'Vazirmatn', Tahoma, sans-serif;
+      font-size: 1.15rem;
+      padding: 12px;
+      min-height: 110px;
+      border: 2px solid #cfd8dc;
+      border-radius: 8px;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+    textarea#newsText:focus {
+      outline: none;
+      border-color: #1565c0;
+      box-shadow: 0 0 5px #1565c0aa;
+    }
+    button[type="submit"] {
+      background-color: #1565c0;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      max-width: 160px;
+      align-self: flex-start;
+    }
+    button[type="submit"]:hover {
+      background-color: #0d47a1;
+    }
+
+    /* پیام‌های موفقیت یا خطا */
+    #message {
+      padding: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      display: none;
+      text-align: center;
+    }
+    #message.success {
+      background-color: #d0f0d8;
+      color: #2e7d32;
+      border: 1.5px solid #2e7d32;
+    }
+    #message.error {
+      background-color: #ffd6d6;
+      color: #c62828;
+      border: 1.5px solid #c62828;
+    }
+
+    /* لیست اخبار */
+    #newsList {
+      max-height: 350px;
+      overflow-y: auto;
+      border: 1.5px solid #cfd8dc;
+      border-radius: 10px;
+      padding: 15px 20px;
+      background: #fafafa;
+    }
+    .news-item {
+      background: #e8f0fe;
+      margin-bottom: 14px;
+      padding: 14px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1rem;
+      color: #0d47a1;
+      word-break: break-word;
+      box-shadow: 0 0 8px rgb(13 71 161 / 0.15);
+      transition: background-color 0.3s;
+    }
+    .news-item:hover {
+      background-color: #d1e4ff;
+    }
+    .news-text {
+      flex-grow: 1;
+      margin-left: 20px;
+      white-space: pre-wrap;
+    }
+    .news-actions button {
+      background-color: #e53935;
+      border: none;
+      color: white;
+      padding: 7px 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .news-actions button:hover {
+      background-color: #ab000d;
+    }
+
+    /* دکمه خروج */
+    #logoutBtn {
+      margin-top: 40px;
+      width: 100%;
+      padding: 16px;
+      font-weight: 700;
+      background-color: #607d8b;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      font-size: 1.2rem;
+      transition: background-color 0.3s;
+    }
+    #logoutBtn:hover {
+      background-color: #455a64;
+    }
+
+    /* واکنشگرا */
+    @media(max-width: 650px) {
+      main {
+        margin: 20px 15px 60px;
+        padding: 20px 20px;
+      }
+      nav {
+        justify-content: center;
+        gap: 18px;
+      }
+      .news-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .news-actions {
+        margin-top: 10px;
+      }
+      button[type="submit"] {
+        max-width: 100%;
+        align-self: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://farshid23.github.io/Aramsh.news/img/logo.png" alt="لوگو آرامش" />
+    <h1>پایگاه خبری آرامش - پنل مدیریت</h1>
+  </header>
+
+  <nav>
+    <a href="#" class="active">مدیریت اخبار</a>
+    <a href="#" id="logoutNav">خروج</a>
+  </nav>
+
+  <main>
+    <h2>افزودن خبر جدید</h2>
+    <form id="newsForm">
+      <textarea id="newsText" placeholder="متن خبر را وارد کنید..."></textarea>
+      <button type="submit">ثبت خبر</button>
+    </form>
+
+    <div id="message"></div>
+
+    <section id="newsList">
+      <h2>لیست اخبار</h2>
+      <div id="newsItems"></div>
+    </section>
+
+    <button id="logoutBtn">خروج از حساب</button>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection
